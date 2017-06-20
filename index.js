@@ -1,7 +1,6 @@
 const Discord = require('discord.js');
 
 const token = process.env.TOKEN;
-const secret = process.env.SECRET;
 const channelName = process.env.CHANNEL || 'general';
 const client = new Discord.Client();
 

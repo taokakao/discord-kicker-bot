@@ -7,6 +7,4 @@ Kicker bot for Discord
 
 `TOKEN` - Bot user OAuth2 token
 
-`SECRET` - Discord app secret
-
 `CHANNEL` - Text channel name to post to (Default: general)
