@@ -5,7 +5,7 @@ const channelName = process.env.CHANNEL || 'general';
 const client = new Discord.Client();
 
 client.on('ready', () => {
-  console.log('I am ready!');
+  console.log('ready');
 });
 
 client.on('message', (message) => {
