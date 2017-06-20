@@ -1,0 +1,19 @@
+{
+  "name": "discord-kicker-bot",
+  "version": "1.0.0",
+  "description": "Kicker bot for Discord",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taokakao/discord-kicker-bot.git"
+  },
+  "author": "taokakao@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/taokakao/discord-kicker-bot/issues"
+  },
+  "homepage": "https://github.com/taokakao/discord-kicker-bot#readme"
+}
