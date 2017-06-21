@@ -1,12 +1,13 @@
 const Discord = require('discord.js');
 const BotCore = require('./src/bo-core');
+const Logger = require('./src/logger');
 
 const token = process.env.TOKEN;
 const botUserId = process.env.BOTUSERID;
 const channelName = process.env.CHANNEL || 'general';
-const logger = console;
+const logger = new Logger('index');
 const client = new Discord.Client({ autoReconnect: true });
-const botCore = new BotCore(logger, botUserId);
+const botCore = new BotCore(botUserId);
 
 client.on('ready', () => {
   logger.log('client is ready');

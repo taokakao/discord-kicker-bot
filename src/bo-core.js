@@ -1,11 +1,12 @@
 const GameStateModel = require('./gameStateModel');
+const Logger = require('./logger');
 
 const teamSize = 1;
 
 class BotCore {
-  constructor(logger, botUserId) {
+  constructor(botUserId) {
     this.stateModel = new GameStateModel(botUserId);
-    this.logger = logger;
+    this.logger = new Logger('BotCore');
   }
 
   go(channel) {
