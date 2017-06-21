@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const BotCore = require('./bo-core');
+const BotCore = require('./src/bo-core');
 
 const token = process.env.TOKEN;
 const botUserId = process.env.BOTUSERID;
