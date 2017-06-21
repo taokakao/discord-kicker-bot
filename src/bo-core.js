@@ -26,7 +26,7 @@ class BotCore {
     this.stateModel.constructingTeams = true;
     this.stateModel.channel = channel;
 
-    this.stateModel.channel.send('Emoji this message to join upcoming game').then((message) => {
+    this.stateModel.channel.send('@here Emoji this message to join upcoming game').then((message) => {
       this.stateModel.welcomeMessage = message;
       message.react(Emoji.EGGPLANT);
       message.react(Emoji.HEART_EYES);
