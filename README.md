@@ -8,3 +8,5 @@ Kicker bot for Discord
 `TOKEN` - Bot user OAuth2 token
 
 `CHANNEL` - Text channel name to post to (Default: general)
+
+`BOTUSERID` - Bot user id
