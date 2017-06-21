@@ -10,6 +10,7 @@ class GameStateModel {
     this.gameTimeoutId = -1;
     this.constructingTeams = false;
     this.welcomeMessage = null;
+    this.autoSignedPlayer = null;
   }
 }
 

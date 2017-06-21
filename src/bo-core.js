@@ -13,7 +13,8 @@ class BotCore {
     this.logger = new Logger('BotCore');
   }
 
-  go(channel) {
+  go(message) {
+    const channel = message.channel;
     this.logger.log(`go request from channel '${channel.name}'`);
 
     if (this.stateModel.constructingTeams) {
@@ -27,16 +28,17 @@ class BotCore {
     this.stateModel.clear();
     this.stateModel.constructingTeams = true;
     this.stateModel.channel = channel;
+    this.stateModel.autoSignedPlayer = message.author;
     this.stateModel.gameTimeoutId = setTimeout(() => {
       this.gameTimeout();
     }, gameTimeoutInterval);
 
-    this.stateModel.channel.send(WELCOME_MESSAGE_BASE).then((message) => {
-      this.stateModel.welcomeMessage = message;
-      message.react(Emoji.EGGPLANT);
-      message.react(Emoji.HEART_EYES);
-      message.react(Emoji.RUNNING_GHOST);
-      message.react(Emoji.THUMBS_UP);
+    this.stateModel.channel.send(WELCOME_MESSAGE_BASE).then((m) => {
+      this.stateModel.welcomeMessage = m;
+      m.react(Emoji.EGGPLANT);
+      m.react(Emoji.HEART_EYES);
+      m.react(Emoji.RUNNING_GHOST);
+      m.react(Emoji.THUMBS_UP);
     });
   }
 
@@ -93,6 +95,7 @@ class BotCore {
 
   updateTeams(reactions) {
     this.stateModel.requests = {};
+    this.stateModel.requests[this.stateModel.autoSignedPlayer.id] = this.stateModel.autoSignedPlayer;
     for (const r of reactions.array()) {
       for (const u of r.users.array()) {
         if (u.id !== this.stateModel.botUserId) {

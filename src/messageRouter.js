@@ -7,7 +7,7 @@ class MessageRouter {
     const text = message.content;
 
     if (text === 'go' || text === 'пщ') {
-      this.botCore.go(message.channel);
+      this.botCore.go(message);
     }
 
     if (text === 'cancel') {
