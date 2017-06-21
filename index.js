@@ -11,6 +11,10 @@ const client = new Discord.Client({ autoReconnect: true });
 const botCore = new BotCore(botUserId);
 const messageRouter = new MessageRouter(botCore);
 
+logger.log(`token: ${token}`);
+logger.log(`bot user ID: ${botUserId}`);
+logger.log(`channel name: ${channelName}`);
+
 client.on('ready', () => {
   logger.log('client is ready');
 });
