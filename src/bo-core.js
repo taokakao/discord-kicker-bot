@@ -4,6 +4,7 @@ const Emoji = require('./emoji');
 const Utils = require('./utils');
 
 const teamSize = 2;
+const WELCOME_MESSAGE_BASE = '@here Emoji this message to join upcoming game';
 
 class BotCore {
   constructor(botUserId) {
@@ -26,7 +27,7 @@ class BotCore {
     this.stateModel.constructingTeams = true;
     this.stateModel.channel = channel;
 
-    this.stateModel.channel.send('@here Emoji this message to join upcoming game').then((message) => {
+    this.stateModel.channel.send(WELCOME_MESSAGE_BASE).then((message) => {
       this.stateModel.welcomeMessage = message;
       message.react(Emoji.EGGPLANT);
       message.react(Emoji.HEART_EYES);
@@ -58,6 +59,7 @@ class BotCore {
     }
     this.logger.log('reaction added');
     this.updateTeam(reactionObject.users);
+    this.updateWelcomeMessage();
     this.checkTeamComplete();
   }
 
@@ -70,6 +72,7 @@ class BotCore {
     }
     this.logger.log('reaction removed');
     this.updateTeam(reactionObject.users);
+    this.updateWelcomeMessage();
     this.checkTeamComplete();
   }
 
@@ -81,8 +84,20 @@ class BotCore {
       // if (!this.stateModel.requests[u.id]) {
         this.stateModel.requests[u.id] = u;
         this.logger.log(`accepted ${u.id}`);
+      } else {
+        this.logger.log(`rejected ${u.id}`);
       }
     }
+  }
+
+  updateWelcomeMessage() {
+    const requests = [];
+    const keys = Object.keys(this.stateModel.requests);
+    for (const k of keys) {
+      requests.push(this.stateModel.requests[k].username);
+    }
+    const signInStr = requests.length > 0 ? requests.join(', ') : 'no one yet'
+    this.stateModel.welcomeMessage.edit(`${WELCOME_MESSAGE_BASE}, signed in: ${signInStr}`);
   }
 
   checkTeamComplete() {
@@ -92,7 +107,7 @@ class BotCore {
       this.printOutTeam(this.stateModel.requests);
       this.stateModel.clear();
     } else {
-      this.logger.log(`teams are not ready yet, ${teamSize - keys.length} to go`);
+      this.logger.log(`teams are not ready yet, ${keys.length} applied, ${(teamSize * 2) - keys.length} to go`);
     }
   }
 
@@ -101,8 +116,7 @@ class BotCore {
     const t1 = keys.slice(0, teamSize).map(e => `<@${e}>`);
     const t2 = keys.slice(teamSize).map(e => `<@${e}>`);
     this.logger.log(`team #1: ${t1}, team #2: ${t2}`);
-    this.stateModel.channel.send(`Team 1: ${t1.join(' ')}`);
-    this.stateModel.channel.send(`Team 2: ${t2.join(' ')}`);
+    this.stateModel.channel.send(`Teams are ready! ${t1.join(' + ')} vs ${t2.join(' + ')}`);
   }
 }
 
