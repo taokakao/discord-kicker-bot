@@ -3,7 +3,7 @@ const Logger = require('./logger');
 const Emoji = require('./emoji');
 const Utils = require('./utils');
 
-const teamSize = 1;
+const teamSize = 2;
 
 class BotCore {
   constructor(botUserId) {
@@ -77,8 +77,8 @@ class BotCore {
     const users = userCollection.array().filter((e, i, a) => a.indexOf(e) === i);
     this.logger.log(`requests to join: ${users.length}, ids: ${users.map(e => e.id).join(',')}`);
     for (const u of users) {
-      // if (u.id !== this.stateModel.botUserId && !this.stateModel.team[u.id]) {
-      if (!this.stateModel.requests[u.id]) {
+      if (u.id !== this.stateModel.botUserId && !this.stateModel.requests[u.id]) {
+      // if (!this.stateModel.requests[u.id]) {
         this.stateModel.requests[u.id] = u;
         this.logger.log(`accepted ${u.id}`);
       }
@@ -96,8 +96,8 @@ class BotCore {
     }
   }
 
-  printOutTeam(team) {
-    const keys = Object.keys(team).slice(0, teamSize * 2);
+  printOutTeam(requests) {
+    const keys = Object.keys(requests).slice(0, teamSize * 2);
     const t1 = keys.slice(0, teamSize).map(e => `<@${e}>`);
     const t2 = keys.slice(teamSize).map(e => `<@${e}>`);
     this.logger.log(`team #1: ${t1}, team #2: ${t2}`);
