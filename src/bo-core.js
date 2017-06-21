@@ -74,8 +74,7 @@ class BotCore {
     if (!this.stateModel.welcomeMessage || this.stateModel.welcomeMessage.id !== reactionObject.message.id) {
       return;
     }
-    this.logger.log('reaction added');
-    this.updateTeam(reactionObject.users);
+    this.updateTeams(reactionObject.message.reactions);
     this.updateWelcomeMessage();
     this.checkTeamComplete();
   }
@@ -87,22 +86,21 @@ class BotCore {
     if (!this.stateModel.welcomeMessage || this.stateModel.welcomeMessage.id !== reactionObject.message.id) {
       return;
     }
-    this.logger.log('reaction removed');
-    this.updateTeam(reactionObject.users);
+    this.updateTeams(reactionObject.message.reactions);
     this.updateWelcomeMessage();
     this.checkTeamComplete();
   }
 
-  updateTeam(userCollection) {
-    const users = userCollection.array().filter((e, i, a) => a.indexOf(e) === i);
-    this.logger.log(`requests to join: ${users.length}, ids: ${users.map(e => e.id).join(',')}`);
-    for (const u of users) {
-      if (u.id !== this.stateModel.botUserId && !this.stateModel.requests[u.id]) {
-      // if (!this.stateModel.requests[u.id]) {
-        this.stateModel.requests[u.id] = u;
-        this.logger.log(`accepted ${u.id}`);
-      } else {
-        this.logger.log(`rejected ${u.id}`);
+  updateTeams(reactions) {
+    this.stateModel.requests = {};
+    for (const r of reactions.array()) {
+      for (const u of r.users.array()) {
+        if (u.id !== this.stateModel.botUserId) {
+          this.stateModel.requests[u.id] = u;
+          this.logger.log(`accepting request from player ${u.id}`);
+        } else {
+          this.logger.log(`rejecting request from player ${u.id}`);
+        }
       }
     }
   }

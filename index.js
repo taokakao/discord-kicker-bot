@@ -24,14 +24,17 @@ client.on('message', (message) => {
   if (channel.type !== 'text' || channel.name !== channelName) {
     return;
   }
+  logger.log('routeable message');
   messageRouter.route(message);
 });
 
 client.on('messageReactionAdd', (reactionObject) => {
+  logger.log('reaction added');
   botCore.handleReactionAdd(reactionObject);
 });
 
 client.on('messageReactionRemove', (reactionObject) => {
+  logger.log('reaction removed');
   botCore.handleReactionRemove(reactionObject);
 });
 
