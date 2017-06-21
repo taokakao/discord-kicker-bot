@@ -1,0 +1,9 @@
+module.exports = Object.freeze({
+  UNAMUSED: '%F0%9F%98%92',
+  JAPANESE_GOBLIN: '%F0%9F%91%BA',
+  POUTING_CAT: '%F0%9F%98%BE',
+  EGGPLANT: '%F0%9F%8D%86',
+  THUMBS_UP: '%F0%9F%91%8D%F0%9F%8F%BE',
+  HEART_EYES: '%F0%9F%98%8D',
+  RUNNING_GHOST: '%F0%9F%91%BB',
+});

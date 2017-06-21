@@ -24,7 +24,7 @@ client.on('message', (message) => {
   }
 
   if (message.content === 'cancel') {
-    botCore.cancel();
+    botCore.cancel(message);
   }
 });
 

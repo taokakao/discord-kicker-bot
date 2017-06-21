@@ -1,5 +1,7 @@
 const GameStateModel = require('./gameStateModel');
 const Logger = require('./logger');
+const Emoji = require('./emoji');
+const Utils = require('./utils');
 
 const teamSize = 1;
 
@@ -10,11 +12,11 @@ class BotCore {
   }
 
   go(channel) {
-    this.stateModel.channel = channel;
     this.logger.log(`go request from channel '${channel.name}'`);
 
     if (this.stateModel.constructingTeams) {
       this.logger.log('go request cancelled: teams are under construction at the moment');
+      channel.send('↑↑↑ Leave emoji on message above ↑↑↑');
       return;
     }
 
@@ -22,24 +24,27 @@ class BotCore {
 
     this.stateModel.clear();
     this.stateModel.constructingTeams = true;
+    this.stateModel.channel = channel;
 
-    channel.send('Emoji this message to join upcoming game').then((message) => {
+    this.stateModel.channel.send('Emoji this message to join upcoming game').then((message) => {
       this.stateModel.welcomeMessage = message;
-      message.react('%F0%9F%8D%86');// baklazhan
-      message.react('%F0%9F%91%8D%F0%9F%8F%BE');// thumbsup
-      message.react('%F0%9F%98%8D');// heart_eyes
-      message.react('%F0%9F%91%BB');// casper
+      message.react(Emoji.EGGPLANT);
+      message.react(Emoji.HEART_EYES);
+      message.react(Emoji.RUNNING_GHOST);
+      message.react(Emoji.THUMBS_UP);
     });
   }
 
-  cancel() {
+  cancel(message) {
     this.logger.log('cancel request');
 
     if (!this.stateModel.constructingTeams) {
       this.logger.log('cancel request cancelled: team is not under construction at the moment');
+      this.stateModel.channel('Cannot cancel, no game announced yet');
       return;
     }
 
+    message.react(Utils.getRandomElementFromArray([Emoji.POUTING_CAT, Emoji.JAPANESE_GOBLIN, Emoji.UNAMUSED]));
     this.logger.log('cancel constructing teams');
     this.stateModel.clear();
   }
