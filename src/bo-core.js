@@ -13,6 +13,12 @@ class BotCore {
     this.logger = new Logger('BotCore');
   }
 
+  help(message) {
+    message.reply('say `go` to kicker channel to invite others for a game. Invitation timeout is 3 minutes. ' +
+      'During that time you may cancel invitation by sending `cancel`. When 3 more buddies will accept your invitation, ' +
+      'bot will announce 2 teams.');
+  }
+
   go(message) {
     const channel = message.channel;
     this.logger.log(`go request from channel '${channel.name}'`);

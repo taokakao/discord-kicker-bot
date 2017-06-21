@@ -9,7 +9,7 @@ const channelName = process.env.CHANNEL || 'general';
 const logger = new Logger('index');
 const client = new Discord.Client({ autoReconnect: true });
 const botCore = new BotCore(botUserId);
-const messageRouter = new MessageRouter(botCore);
+const messageRouter = new MessageRouter(channelName, botCore);
 
 logger.log(`token: ${token}`);
 logger.log(`bot user ID: ${botUserId}`);
@@ -20,11 +20,6 @@ client.on('ready', () => {
 });
 
 client.on('message', (message) => {
-  const channel = message.channel;
-  if (channel.type !== 'text' || channel.name !== channelName) {
-    return;
-  }
-  logger.log('routeable message');
   messageRouter.route(message);
 });
 
