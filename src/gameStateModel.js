@@ -7,6 +7,7 @@ class GameStateModel {
 
   clear() {
     this.requests = {};
+    this.gameTimeoutId = -1;
     this.constructingTeams = false;
     this.welcomeMessage = null;
   }

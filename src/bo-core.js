@@ -4,6 +4,7 @@ const Emoji = require('./emoji');
 const Utils = require('./utils');
 
 const teamSize = 2;
+const gameTimeoutInterval = 3 * 60 * 1000;
 const WELCOME_MESSAGE_BASE = '@here Emoji this message to join upcoming game';
 
 class BotCore {
@@ -26,6 +27,9 @@ class BotCore {
     this.stateModel.clear();
     this.stateModel.constructingTeams = true;
     this.stateModel.channel = channel;
+    this.stateModel.gameTimeoutId = setTimeout(() => {
+      this.gameTimeout();
+    }, gameTimeoutInterval);
 
     this.stateModel.channel.send(WELCOME_MESSAGE_BASE).then((message) => {
       this.stateModel.welcomeMessage = message;
@@ -47,6 +51,19 @@ class BotCore {
 
     message.react(Utils.getRandomElementFromArray([Emoji.POUTING_CAT, Emoji.JAPANESE_GOBLIN, Emoji.UNAMUSED]));
     this.logger.log('cancel constructing teams');
+    this.reset();
+  }
+
+  gameTimeout() {
+    this.logger.log('game request timed out, cancelling game');
+    this.stateModel.channel.send('Game request timed out. Not enough players.');
+    this.reset();
+  }
+
+  reset() {
+    if (this.stateModel.gameTimeoutId >= 0) {
+      clearTimeout(this.stateModel.gameTimeoutId);
+    }
     this.stateModel.clear();
   }
 
