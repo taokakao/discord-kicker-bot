@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const MessageRouter = require('./src/messageRouter');
 const BotCore = require('./src/bo-core');
 const Logger = require('./src/logger');
 
@@ -8,6 +9,7 @@ const channelName = process.env.CHANNEL || 'general';
 const logger = new Logger('index');
 const client = new Discord.Client({ autoReconnect: true });
 const botCore = new BotCore(botUserId);
+const messageRouter = new MessageRouter(botCore);
 
 client.on('ready', () => {
   logger.log('client is ready');
@@ -18,14 +20,7 @@ client.on('message', (message) => {
   if (channel.type !== 'text' || channel.name !== channelName) {
     return;
   }
-
-  if (message.content === 'go') {
-    botCore.go(channel);
-  }
-
-  if (message.content === 'cancel') {
-    botCore.cancel(message);
-  }
+  messageRouter.route(message);
 });
 
 client.on('messageReactionAdd', (reactionObject) => {
