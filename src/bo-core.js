@@ -136,7 +136,7 @@ class BotCore {
   }
 
   printOutTeam(requests) {
-    const keys = Object.keys(requests).slice(0, teamSize * 2);
+    const keys = Utils.shuffleArray(Object.keys(requests).slice(0, teamSize * 2));
     const t1 = keys.slice(0, teamSize).map(e => `<@${e}>`);
     const t2 = keys.slice(teamSize).map(e => `<@${e}>`);
     this.logger.log(`team #1: ${t1}, team #2: ${t2}`);
