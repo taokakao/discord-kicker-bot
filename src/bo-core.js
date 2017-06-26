@@ -129,6 +129,7 @@ class BotCore {
     if (keys.length >= teamSize * 2) {
       this.logger.log('teams are ready');
       this.printOutTeam(this.stateModel.requests);
+      clearTimeout(this.stateModel.gameTimeoutId);
       this.stateModel.clear();
     } else {
       this.logger.log(`teams are not ready yet, ${keys.length} applied, ${(teamSize * 2) - keys.length} to go`);
