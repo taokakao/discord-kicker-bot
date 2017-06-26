@@ -16,7 +16,7 @@ const shuffleArray = (arr) => {
   const out = [];
   while (source.length > 0) {
     const randomIndex = Math.round(Math.random() * (source.length - 1));
-    out.push(arr[randomIndex]);
+    out.push(source[randomIndex]);
     source.splice(randomIndex, 1);
   }
   return out;
